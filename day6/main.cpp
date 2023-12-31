@@ -6,43 +6,20 @@
 
 using namespace std;
 
-struct QuadraticFunction {
-    double a, b, c = 0;
-
-    double calcDeterminant() {
-        return pow(b,2)-4*a*c;
-    }
-
-    vector<double> getZeroPoints() {
-        vector<double> zeroPoints;
-
-        double determinant = calcDeterminant();
-
-        if(determinant > 0) {
-            double sqrtDeterminant = sqrt(determinant);
-
-            zeroPoints.push_back((-b+sqrtDeterminant)/(2*a));
-            zeroPoints.push_back((-b-sqrtDeterminant)/(2*a));
-        } else if (determinant == 0) {
-            zeroPoints.push_back(-b/(2*a));
-        }
-        return zeroPoints;
-    }
-};
-
 struct Game {
     long long time, distance = 0;
 
     long long calcHoldButtonTimeToWin() {
-        QuadraticFunction q;
-        q.a = -1;
-        q.b = time;
-        q.c = -distance;
+        int a = -1, b = time, c = -distance;
 
-        vector<double> zeroPoints = q.getZeroPoints();
-        if(zeroPoints.size() != 2) return 1; //above x = 0 are distances higher than record, searching for x in f(x) > 0
+        double determinant = pow(b,2)-4*a*c;
 
-        double min = zeroPoints[0], max = zeroPoints[1];
+        if(determinant <= 0) return 1; //above x = 0 are distances higher than record, searching for x in f(x) > 0
+
+        double sqrtDeterminant = sqrt(determinant);
+
+        double min = (-b+sqrtDeterminant)/(2*a);
+        double max = (-b-sqrtDeterminant)/(2*a);
 
         if(fmod(max, 1.0) == 0.0) {
             max--;
