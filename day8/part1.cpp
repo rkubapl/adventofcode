@@ -17,7 +17,6 @@ int main()
 
     map<string,Node> nodes;
 
-    int instructionIndex = 0;
     string instructions = "";
 
     if (input.is_open()) {
@@ -29,20 +28,9 @@ int main()
 
             if(line == "") continue;
 
-            string key;
-            key += line[0];
-            key += line[1];
-            key += line[2];
-
-            string left_child;
-            left_child += line[7];
-            left_child += line[8];
-            left_child += line[9];
-
-            string right_child;
-            right_child += line[12];
-            right_child += line[13];
-            right_child += line[14];
+            string key = {line[0], line[1], line[2]};
+            string left_child = {line[7], line[8], line[9]};
+            string right_child = {line[12], line[13], line[14]};
 
             Node node;
             node.key = key;
@@ -58,20 +46,16 @@ int main()
     }
 
     int stepsCount = 0;
-    Node startNode = nodes["AAA"];
+    int instructionIndex = 0;
 
-    while(startNode.key != "ZZZ") {
+    Node node = nodes["AAA"];
+    while(node.key != "ZZZ") {
         stepsCount++;
 
         char ch = instructions[instructionIndex];
 
-        if(ch == 'L') {
-            startNode = *startNode.left_child;
-        }
-
-        if(ch == 'R') {
-            startNode = *startNode.right_child;
-        }
+        if(ch == 'L') node = *node.left_child;
+        if(ch == 'R') node = *node.right_child;
 
         if(instructionIndex == instructions.length()-1) {
             instructionIndex = 0;
